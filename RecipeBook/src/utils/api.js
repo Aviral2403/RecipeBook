@@ -1,7 +1,8 @@
-const API_KEY = '4edcd0c3093445349691a3292bcc5b77';
+const API_KEY = 'cefe7de6dac642959491f5a6a4faaaa8';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 console.log('API Key:', API_KEY)
+
 export const fetchRandomRecipes = async (count = 6) => {
   try {
     const response = await fetch(

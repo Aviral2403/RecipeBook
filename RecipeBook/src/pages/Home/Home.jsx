@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRecipes } from '../../context/RecipeContext';
 import RecipeCard from '../../components/RecipeCard/RecipeCard';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import Pagination from '../../components/Pagination/Pagination';
 import './Home.css';
 
 const SearchBarSkeleton = () => (
@@ -38,14 +39,29 @@ const LoadingSkeleton = () => (
 );
 
 const Home = () => {
-  const { recipes, loading, error, getRandomRecipes, searchRecipesByQuery } = useRecipes();
+  const { 
+    recipes, 
+    loading, 
+    error, 
+    currentPage,
+    totalPages,
+    totalResults,
+    isRandomMode,
+    getRandomRecipes, 
+    searchRecipesByQuery,
+    loadMoreRandomRecipes,
+    goToPage,
+    resetPagination
+  } = useRecipes();
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     if (!searchQuery && isInitialLoad) {
-      getRandomRecipes(12);
+      // Load 12 random recipes for initial homepage load
+      getRandomRecipes(12, false); // false = don't append, it's initial load
       setIsInitialLoad(false);
     }
   }, [searchQuery, isInitialLoad]);
@@ -53,16 +69,30 @@ const Home = () => {
   const handleSearch = async () => {
     if (searchQuery.trim()) {
       setIsSearching(true);
-      await searchRecipesByQuery(searchQuery);
+      resetPagination(); // Reset pagination for new search
+      await searchRecipesByQuery(searchQuery.trim(), {}, 1, 12, true);
       setIsSearching(false);
     }
   };
 
-  const handleClearSearch = () => {
+  const handleClearSearch = async () => {
     setSearchQuery('');
     setIsSearching(true);
-    getRandomRecipes(12);
+    resetPagination(); // Reset pagination
+    await getRandomRecipes(12, false); // Reset to initial random recipes
     setIsSearching(false);
+  };
+
+  const handlePageChange = async (page) => {
+    // Scroll to top when changing pages
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    await goToPage(page);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   // Show search bar immediately, don't wait for loading
@@ -79,6 +109,7 @@ const Home = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onSearch={handleSearch}
+          onKeyPress={handleKeyPress}
         />
       ) : (
         <SearchBarSkeleton />
@@ -100,7 +131,7 @@ const Home = () => {
                   if (searchQuery.trim()) {
                     handleSearch();
                   } else {
-                    getRandomRecipes(12);
+                    getRandomRecipes(12, false);
                   }
                 }}
               >
@@ -123,19 +154,64 @@ const Home = () => {
             </div>
           ) : (
             <>
-              {/* Show recipes as they become available */}
+              {/* Results header */}
+              {searchQuery && totalResults > 0 && !isRandomMode && (
+                <div className="results-header">
+                  <h2>Search Results for "{searchQuery}"</h2>
+                  <button 
+                    className="clear-search-btn"
+                    onClick={handleClearSearch}
+                  >
+                    ✕ Clear Search
+                  </button>
+                </div>
+              )}
+              
+              
+              
+              {/* Show recipes */}
               <div className="recipes-grid">
                 {recipes.map(recipe => (
                   <RecipeCard key={recipe.id} recipe={recipe} />
                 ))}
               </div>
               
-              {/* Show additional skeletons if still loading more recipes */}
+              {/* Load More Button for Random Recipes */}
+              {isRandomMode && (
+                <div className="load-more-container">
+                  <button 
+                    className="load-more-btn"
+                    onClick={() => loadMoreRandomRecipes(12)}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <div className="loading-spinner small"></div>
+                        Loading More...
+                      </>
+                    ) : (
+                      'Load More Recipes'
+                    )}
+                  </button>
+                </div>
+              )}
+              
+              {/* Pagination Component - Only show for search results */}
+              {!isRandomMode && totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalResults={totalResults}
+                  onPageChange={handlePageChange}
+                  loading={loading}
+                />
+              )}
+              
+              {/* Show loading indicator when changing pages */}
               {loading && recipes.length > 0 && (
-                <div className="recipes-grid additional-loading">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <RecipeCardSkeleton key={`additional-${index}`} />
-                  ))}
+                <div className="page-loading">
+                  <div className="loading-spinner"></div>
+                  <p>Loading recipes...</p>
                 </div>
               )}
             </>

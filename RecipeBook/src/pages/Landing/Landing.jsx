@@ -12,6 +12,7 @@ const Landing = () => {
   const [loadedVideoCount, setLoadedVideoCount] = useState(0);
 
   useEffect(() => {
+    // Always get exactly 6 recipes for landing page
     getRandomRecipes(6);
   }, []);
 
@@ -154,7 +155,7 @@ const Landing = () => {
           <div className="error">{error}</div>
         ) : recipes.length > 0 ? (
           <div className="retro-recipes-grid">
-            {recipes.slice(0, 8).map((recipe) => (
+            {recipes.slice(0, 6).map((recipe) => (
               <LandingRecipeCard key={recipe.id} recipe={recipe} />
             ))}
           </div>
