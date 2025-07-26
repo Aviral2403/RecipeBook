@@ -12,7 +12,6 @@ const Landing = () => {
   const [loadedVideoCount, setLoadedVideoCount] = useState(0);
 
   useEffect(() => {
-    // Always get exactly 6 recipes for landing page
     getRandomRecipes(6);
   }, []);
 
@@ -55,15 +54,16 @@ const Landing = () => {
   };
 
   const cookingVideos = [
-    "./video-2.webm", 
-    "./video-3.webm",
-    "./video-4.webm",
-    "./video-5.webm",
+    "https://videos.pexels.com/video-files/2081576/2081576-hd_1920_1080_30fps.mp4",
+    "https://videos.pexels.com/video-files/2961911/2961911-hd_1920_1080_25fps.mp4",
+    "https://videos.pexels.com/video-files/2620043/2620043-uhd_2560_1440_25fps.mp4",
+    // "./video-4.webm",
+    // "./video-5.webm",
   ];
 
   // Handle video loading
   const handleVideoLoad = () => {
-    setLoadedVideoCount(prev => {
+    setLoadedVideoCount((prev) => {
       const newCount = prev + 1;
       if (newCount >= cookingVideos.length) {
         setVideosLoaded(true);
@@ -84,17 +84,24 @@ const Landing = () => {
         <div className="hero-background">
           {/* Show static background initially, then videos when ready */}
           {!videosLoaded && (
-            <div className="hero-static-bg" style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              zIndex: 1
-            }} />
+            <div
+              className="hero-static-bg"
+              style={{
+                backgroundImage:
+                  "url('https://images.pexels.com/photos/1482803/pexels-photo-1482803.jpeg')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 1,
+              }}
+            />
           )}
-          
+
           {cookingVideos.map((video, index) => (
             <video
               key={index}
@@ -106,12 +113,12 @@ const Landing = () => {
               preload="none" // Don't preload videos
               onLoadedData={handleVideoLoad}
               onError={(e) => {
-                e.target.style.display = 'none';
+                e.target.style.display = "none";
                 handleVideoLoad(); // Count failed loads too
               }}
               style={{
                 opacity: videosLoaded ? 1 : 0,
-                transition: 'opacity 0.5s ease-in-out'
+                transition: "opacity 0.5s ease-in-out",
               }}
             >
               <source src={video} type="video/webm" />
@@ -126,7 +133,7 @@ const Landing = () => {
               Discover 1000+ recipes in your hand with the best recipe. Help you
               to find the easiest way to cook.
             </p>
-            <Link to='/recipes'>
+            <Link to="/recipes">
               <button className="explore-btn">Explore Recipes</button>
             </Link>
           </div>
@@ -148,13 +155,13 @@ const Landing = () => {
             <button className="vintage-btn">View Full Menu</button>
           </Link>
         </div>
-        
+
         {/* Show content immediately, even if recipes are still loading */}
         {error ? (
           <div className="error">{error}</div>
         ) : recipes.length > 0 ? (
           <div className="retro-recipes-grid">
-            {recipes.slice(0, 6).map((recipe) => (
+            {recipes.slice(0, 8).map((recipe) => (
               <LandingRecipeCard key={recipe.id} recipe={recipe} />
             ))}
           </div>
@@ -197,7 +204,7 @@ const Landing = () => {
                 Satisfy your taste buds with quick, delicious meals anyone can
                 make.
               </p>
-              <Link to='/recipes'>
+              <Link to="/recipes">
                 <button className="explore-btn">Explore</button>
               </Link>
             </div>
