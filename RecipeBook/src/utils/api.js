@@ -1,4 +1,4 @@
-const API_KEY = 'cefe7de6dac642959491f5a6a4faaaa8';
+const API_KEY = '734c040cf6c348519220a7b8d8951475';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 console.log('API Key:', API_KEY)
@@ -8,7 +8,7 @@ export const fetchRandomRecipes = async (count = 6) => {
     const response = await fetch(
       `${BASE_URL}/random?apiKey=${API_KEY}&number=${count}`
     );
-    if (!response.ok) throw new Error('Failed to fetch recipes');
+    if (!response.ok) throw new Error('Failed to fetch recipes , API Limit Reached , Try Tommrow!');
     return await response.json();
   } catch (error) {
     console.error('Error fetching random recipes:', error);
@@ -21,7 +21,7 @@ export const fetchRecipeById = async (id) => {
     const response = await fetch(
       `${BASE_URL}/${id}/information?apiKey=${API_KEY}&includeNutrition=true`
     );
-    if (!response.ok) throw new Error('Failed to fetch recipe details');
+    if (!response.ok) throw new Error('Failed to fetch recipes , API Limit Reached , Try Tommrow!');
     return await response.json();
   } catch (error) {
     console.error('Error fetching recipe details:', error);
@@ -34,7 +34,7 @@ export const fetchRecipeInstructions = async (id) => {
     const response = await fetch(
       `${BASE_URL}/${id}/analyzedInstructions?apiKey=${API_KEY}`
     );
-    if (!response.ok) throw new Error('Failed to fetch recipe instructions');
+    if (!response.ok) throw new Error('Failed to fetch recipes , API Limit Reached , Try Tommrow!');
     return await response.json();
   } catch (error) {
     console.error('Error fetching recipe instructions:', error);
