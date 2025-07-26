@@ -8,96 +8,12 @@ import "./Landing.css";
 const Landing = () => {
   const { recipes, getRandomRecipes, loading, error } = useRecipes();
   const navigate = useNavigate();
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [videosLoaded, setVideosLoaded] = useState(false);
-  const [testimonialLoaded, setTestimonialLoaded] = useState(false);
-  const [allContentLoaded, setAllContentLoaded] = useState(false);
+  const [loadedVideoCount, setLoadedVideoCount] = useState(0);
 
   useEffect(() => {
     getRandomRecipes(6);
   }, []);
-
-  useEffect(() => {
-    if (recipes.length > 0) {
-      const imagePromises = recipes.slice(0, 8).map((recipe) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.onload = resolve;
-          img.onerror = resolve; // Resolve even on error to not block loading
-          img.src = recipe.image || "https://via.placeholder.com/300x200";
-        });
-      });
-
-      const breakfastImagePromise = new Promise((resolve) => {
-        const img = new Image();
-        img.onload = resolve;
-        img.onerror = resolve;
-        img.src =
-          "https://images.pexels.com/photos/17132216/pexels-photo-17132216.jpeg";
-      });
-
-      imagePromises.push(breakfastImagePromise);
-
-      Promise.all(imagePromises).then(() => {
-        setImagesLoaded(true);
-      });
-    }
-  }, [recipes]);
-
-  useEffect(() => {
-    const cookingVideos = [
-      "/video-1.mp4",
-      "/video-2.mp4",
-      "/video-3.mp4",
-      "/video-4.mp4",
-      "/video-5.mp4",
-    ];
-
-    const videoPromises = cookingVideos.map((videoSrc) => {
-      return new Promise((resolve) => {
-        const video = document.createElement("video");
-        video.onloadeddata = resolve;
-        video.onerror = resolve; // Resolve even on error
-        video.src = videoSrc;
-      });
-    });
-
-    Promise.all(videoPromises).then(() => {
-      setVideosLoaded(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTestimonialLoaded(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (
-      !loading &&
-      !error &&
-      imagesLoaded &&
-      videosLoaded &&
-      testimonialLoaded &&
-      recipes.length > 0
-    ) {
-      const timer = setTimeout(() => {
-        setAllContentLoaded(true);
-      }, 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [
-    loading,
-    error,
-    imagesLoaded,
-    videosLoaded,
-    testimonialLoaded,
-    recipes.length,
-  ]);
 
   const LandingRecipeCard = ({ recipe }) => {
     const handleRecipeClick = () => {
@@ -115,10 +31,11 @@ const Landing = () => {
           <img
             src={recipe.image || "/placeholder.jpg"}
             onError={(e) => {
-              e.target.src = "/placeholder.jpg"; // Fallback if image fails to load
+              e.target.src = "/placeholder.jpg";
             }}
             alt={recipe.title}
             className="recipe-card-image"
+            loading="lazy"
           />
           <div className="image-border"></div>
         </div>
@@ -137,22 +54,47 @@ const Landing = () => {
   };
 
   const cookingVideos = [
-    "./video-1.mp4",
-    "./video-2.mp4",
-    "./video-3.mp4",
-    "./video-4.mp4",
-    "./video-5.mp4",
+    "./video-1.webm",
+    "./video-2.webm", 
+    "./video-3.webm",
+    "./video-4.webm",
+    "./video-5.webm",
   ];
 
-  if (!allContentLoaded) {
+  // Handle video loading
+  const handleVideoLoad = () => {
+    setLoadedVideoCount(prev => {
+      const newCount = prev + 1;
+      if (newCount >= cookingVideos.length) {
+        setVideosLoaded(true);
+      }
+      return newCount;
+    });
+  };
+
+  // Show skeleton only for the initial recipe loading
+  if (loading && recipes.length === 0) {
     return <LoadingSkeleton />;
   }
 
   return (
     <div className="landing-container">
-      {/* Hero Section */}
+      {/* Hero Section - Show immediately with fallback */}
       <section className="hero-section">
         <div className="hero-background">
+          {/* Show static background initially, then videos when ready */}
+          {!videosLoaded && (
+            <div className="hero-static-bg" style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1
+            }} />
+          )}
+          
           {cookingVideos.map((video, index) => (
             <video
               key={index}
@@ -161,8 +103,18 @@ const Landing = () => {
               muted
               loop
               playsInline
+              preload="none" // Don't preload videos
+              onLoadedData={handleVideoLoad}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                handleVideoLoad(); // Count failed loads too
+              }}
+              style={{
+                opacity: videosLoaded ? 1 : 0,
+                transition: 'opacity 0.5s ease-in-out'
+              }}
             >
-              <source src={video} type="video/mp4" />
+              <source src={video} type="video/webm" />
             </video>
           ))}
           <div className="hero-overlay"></div>
@@ -175,7 +127,7 @@ const Landing = () => {
               to find the easiest way to cook.
             </p>
             <Link to='/recipes'>
-            <button className="explore-btn">Explore Recipes</button>
+              <button className="explore-btn">Explore Recipes</button>
             </Link>
           </div>
         </div>
@@ -196,12 +148,28 @@ const Landing = () => {
             <button className="vintage-btn">View Full Menu</button>
           </Link>
         </div>
+        
+        {/* Show content immediately, even if recipes are still loading */}
         {error ? (
           <div className="error">{error}</div>
-        ) : (
+        ) : recipes.length > 0 ? (
           <div className="retro-recipes-grid">
             {recipes.slice(0, 8).map((recipe) => (
               <LandingRecipeCard key={recipe.id} recipe={recipe} />
+            ))}
+          </div>
+        ) : (
+          // Show skeleton cards while recipes load
+          <div className="retro-recipes-grid">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="recipe-skeleton-card">
+                <div className="skeleton-header"></div>
+                <div className="skeleton-image"></div>
+                <div className="skeleton-content">
+                  <div className="skeleton-line"></div>
+                  <div className="skeleton-line short"></div>
+                </div>
+              </div>
             ))}
           </div>
         )}
@@ -230,7 +198,7 @@ const Landing = () => {
                 make.
               </p>
               <Link to='/recipes'>
-              <button className="explore-btn">Explore</button>
+                <button className="explore-btn">Explore</button>
               </Link>
             </div>
 
@@ -241,6 +209,7 @@ const Landing = () => {
                     src="https://images.pexels.com/photos/17132216/pexels-photo-17132216.jpeg"
                     alt="Healthy bowl with tofu, vegetables, and greens"
                     className="food-bowl"
+                    loading="lazy"
                   />
                 </div>
               </div>
