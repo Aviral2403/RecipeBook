@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecipes } from "../../context/RecipeContext";
 import TestimonialCarousel from "../../components/TestimonialCarousel/TestimonialCarousel";
@@ -8,63 +8,13 @@ import "./Landing.css";
 const Landing = () => {
   const { recipes, getRandomRecipes, loading, error } = useRecipes();
   const navigate = useNavigate();
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const videoRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [videosLoaded, setVideosLoaded] = useState(false);
+  const [loadedVideoCount, setLoadedVideoCount] = useState(0);
 
-  // Detect mobile device
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    // Always get exactly 6 recipes for landing page
+    getRandomRecipes(6);
   }, []);
-
-  useEffect(() => {
-    // Load fewer recipes to reduce memory usage
-    getRandomRecipes(6); // Reduced from 6 to 4
-  }, []);
-
-  // Reduced video array for better performance
-  const cookingVideos = isMobile ? 
-    ["./video-1.webm", "./video-2.webm"] : // Only 2 videos on mobile
-    ["./video-1.webm", "./video-2.webm", "./video-3.webm"]; // 3 videos on desktop
-
-  // Cycle through videos instead of playing all simultaneously
-  useEffect(() => {
-    if (!isMobile && cookingVideos.length > 1) {
-      const interval = setInterval(() => {
-        setCurrentVideoIndex((prev) => (prev + 1) % cookingVideos.length);
-        setVideoLoaded(false);
-      }, 8000); // Change video every 8 seconds
-
-      return () => clearInterval(interval);
-    }
-  }, [cookingVideos.length, isMobile]);
-
-  // Cleanup video on component unmount
-  useEffect(() => {
-    return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.src = '';
-        videoRef.current.load();
-      }
-    };
-  }, []);
-
-  const handleVideoLoad = () => {
-    setVideoLoaded(true);
-  };
-
-  const handleVideoError = () => {
-    console.warn('Video failed to load, using fallback');
-    setVideoLoaded(true); // Still show static background
-  };
 
   const LandingRecipeCard = ({ recipe }) => {
     const handleRecipeClick = () => {
@@ -87,9 +37,6 @@ const Landing = () => {
             alt={recipe.title}
             className="recipe-card-image"
             loading="lazy"
-            // Add explicit dimensions to prevent layout shift
-            width="300"
-            height="200"
           />
           <div className="image-border"></div>
         </div>
@@ -107,6 +54,24 @@ const Landing = () => {
     );
   };
 
+  const cookingVideos = [
+    "./video-2.webm", 
+    "./video-3.webm",
+    "./video-4.webm",
+    "./video-5.webm",
+  ];
+
+  // Handle video loading
+  const handleVideoLoad = () => {
+    setLoadedVideoCount(prev => {
+      const newCount = prev + 1;
+      if (newCount >= cookingVideos.length) {
+        setVideosLoaded(true);
+      }
+      return newCount;
+    });
+  };
+
   // Show skeleton only for the initial recipe loading
   if (loading && recipes.length === 0) {
     return <LoadingSkeleton />;
@@ -114,46 +79,44 @@ const Landing = () => {
 
   return (
     <div className="landing-container">
-      {/* Hero Section - Optimized for mobile */}
+      {/* Hero Section - Show immediately with fallback */}
       <section className="hero-section">
         <div className="hero-background">
-          {/* Always show static background first */}
-          <div className="hero-static-bg" style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1,
-            opacity: videoLoaded && !isMobile ? 0 : 1,
-            transition: 'opacity 1s ease-in-out'
-          }} />
+          {/* Show static background initially, then videos when ready */}
+          {!videosLoaded && (
+            <div className="hero-static-bg" style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1
+            }} />
+          )}
           
-          {/* Only load video on desktop or good connection */}
-          {!isMobile && (
+          {cookingVideos.map((video, index) => (
             <video
-              ref={videoRef}
-              className="hero-video hero-video-1"
+              key={index}
+              className={`hero-video hero-video-${index + 1}`}
               autoPlay
               muted
               loop
               playsInline
-              preload="metadata" // Changed from "none" to "metadata"
+              preload="none" // Don't preload videos
               onLoadedData={handleVideoLoad}
-              onError={handleVideoError}
-              style={{
-                opacity: videoLoaded ? 1 : 0,
-                transition: 'opacity 1s ease-in-out'
+              onError={(e) => {
+                e.target.style.display = 'none';
+                handleVideoLoad(); // Count failed loads too
               }}
-              // Add size constraints
-              width="100%"
-              height="100%"
+              style={{
+                opacity: videosLoaded ? 1 : 0,
+                transition: 'opacity 0.5s ease-in-out'
+              }}
             >
-              <source src={cookingVideos[currentVideoIndex]} type="video/webm" />
+              <source src={video} type="video/webm" />
             </video>
-          )}
-          
+          ))}
           <div className="hero-overlay"></div>
         </div>
         <div className="hero-content">
@@ -186,18 +149,19 @@ const Landing = () => {
           </Link>
         </div>
         
+        {/* Show content immediately, even if recipes are still loading */}
         {error ? (
           <div className="error">{error}</div>
         ) : recipes.length > 0 ? (
           <div className="retro-recipes-grid">
-            {recipes.slice(0, 4).map((recipe) => ( // Reduced from 6 to 4
+            {recipes.slice(0, 6).map((recipe) => (
               <LandingRecipeCard key={recipe.id} recipe={recipe} />
             ))}
           </div>
         ) : (
-          // Show fewer skeleton cards
+          // Show skeleton cards while recipes load
           <div className="retro-recipes-grid">
-            {Array.from({ length: 4 }).map((_, index) => ( // Reduced from 6 to 4
+            {Array.from({ length: 6 }).map((_, index) => (
               <div key={index} className="recipe-skeleton-card">
                 <div className="skeleton-header"></div>
                 <div className="skeleton-image"></div>
@@ -246,9 +210,6 @@ const Landing = () => {
                     alt="Healthy bowl with tofu, vegetables, and greens"
                     className="food-bowl"
                     loading="lazy"
-                    // Add explicit dimensions
-                    width="400"
-                    height="300"
                   />
                 </div>
               </div>
