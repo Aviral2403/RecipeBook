@@ -145,7 +145,7 @@ const Landing = () => {
             <div className="ornament-line right"></div>
           </div>
           <p className="menu-subtitle">Our most beloved recipes of this week</p>
-          <Link to="/home">
+          <Link to="/recipes">
             <button className="vintage-btn">View Full Menu</button>
           </Link>
         </div>
