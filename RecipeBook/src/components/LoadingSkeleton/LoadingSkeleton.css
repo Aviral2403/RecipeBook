@@ -1,0 +1,401 @@
+@keyframes skeleton-pulse {
+  0% {
+    background-color: #f0f0f0;
+  }
+  50% {
+    background-color: #e0e0e0;
+  }
+  100% {
+    background-color: #f0f0f0;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.skeleton-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+.skeleton-line,
+.skeleton-button,
+.skeleton-recipe-image,
+.skeleton-avatar,
+.skeleton-food-bowl {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeleton-hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.skeleton-hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f5f5f5 25%, #eeeeee 50%, #f5f5f5 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 2s ease-in-out infinite;
+}
+
+.skeleton-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.skeleton-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+  max-width: 800px;
+}
+
+.skeleton-hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.skeleton-title {
+  width: 600px;
+  height: 60px;
+  max-width: 90vw;
+}
+
+.skeleton-title-2 {
+  width: 400px;
+  height: 60px;
+  max-width: 70vw;
+}
+
+.skeleton-subtitle {
+  width: 500px;
+  height: 24px;
+  max-width: 80vw;
+}
+
+.skeleton-subtitle-2 {
+  width: 450px;
+  height: 24px;
+  max-width: 75vw;
+}
+
+.skeleton-button {
+  width: 180px;
+  height: 50px;
+  border-radius: 25px;
+  margin-top: 20px;
+}
+
+.skeleton-popular {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+.skeleton-section-header {
+  text-align: center;
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.skeleton-section-title {
+  width: 400px;
+  height: 40px;
+  max-width: 80vw;
+}
+
+.skeleton-section-subtitle {
+  width: 300px;
+  height: 20px;
+  max-width: 60vw;
+}
+
+.skeleton-see-all {
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.skeleton-recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 0 20px;
+}
+
+.skeleton-recipe-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.skeleton-recipe-card:hover {
+  transform: translateY(-5px);
+}
+
+.skeleton-recipe-image {
+  width: 100%;
+  height: 200px;
+  animation-delay: 0.1s;
+}
+
+.skeleton-recipe-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-recipe-title {
+  width: 80%;
+  height: 24px;
+}
+
+.skeleton-recipe-author {
+  width: 60%;
+  height: 18px;
+}
+
+.skeleton-testimonial {
+  padding: 80px 20px;
+  background-color: #ffffff;
+}
+
+.skeleton-testimonial-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.skeleton-testimonial-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 600px;
+}
+
+.skeleton-testimonial-text {
+  width: 100%;
+  height: 24px;
+  margin-bottom: 15px;
+}
+
+.skeleton-testimonial-text-2 {
+  width: 80%;
+  height: 24px;
+  margin: 0 auto 30px;
+}
+
+.skeleton-testimonial-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.skeleton-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.skeleton-author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-author-name {
+  width: 120px;
+  height: 20px;
+}
+
+.skeleton-author-role {
+  width: 100px;
+  height: 16px;
+}
+
+.skeleton-breakfast {
+  padding: 100px 20px;
+  background-color: #ffffff;
+}
+
+.skeleton-breakfast-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.skeleton-content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.skeleton-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skeleton-main-heading {
+  width: 90%;
+  height: 50px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeleton-main-heading-2 {
+  width: 80%;
+  height: 50px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeleton-main-heading-3 {
+  width: 70%;
+  height: 50px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeleton-description {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.skeleton-description-2 {
+  width: 85%;
+  height: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeleton-explore {
+  width: 150px;
+  height: 50px;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  margin-top: 20px;
+}
+
+.skeleton-image-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.skeleton-food-bowl {
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+@media (max-width: 768px) {
+  .skeleton-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .skeleton-recipes-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .skeleton-title {
+    width: 90vw;
+    height: 40px;
+  }
+  
+  .skeleton-title-2 {
+    width: 70vw;
+    height: 40px;
+  }
+  
+  .skeleton-food-bowl {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .skeleton-testimonial-author {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skeleton-hero {
+    height: 70vh;
+  }
+  
+  .skeleton-popular,
+  .skeleton-testimonial,
+  .skeleton-breakfast {
+    padding: 40px 15px;
+  }
+  
+  .skeleton-testimonial-card {
+    padding: 25px;
+  }
+  
+  .skeleton-food-bowl {
+    width: 250px;
+    height: 250px;
+  }
+}

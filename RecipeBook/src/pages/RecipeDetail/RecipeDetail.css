@@ -1,0 +1,1063 @@
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --vintage-cream: #f4f1e8;
+  --vintage-paper: #ede7d3;
+  --vintage-parchment: #e8e0c7;
+  --vintage-brown: #8b4513;
+  --vintage-dark-brown: #654321;
+  --vintage-gold: #b8860b;
+  --vintage-copper: #b87333;
+  --vintage-sepia: #704214;
+  --vintage-ink: #2f1b14;
+  --vintage-fade: #a0956b;
+  --vintage-shadow: rgba(101, 67, 33, 0.3);
+  --vintage-border: rgba(139, 69, 19, 0.4);
+  --modern-yellow: #f5c842;
+  --modern-yellow-light: #fff3c7;
+  --modern-gray: #333333;
+  --modern-light-gray: #666666;
+  --modern-bg: #fafafa;
+  --modern-white: #ffffff;
+  --modern-shadow: rgba(0, 0, 0, 0.1);
+  --modern-green: #81c784;
+  --modern-purple: #ba68c8;
+  --modern-blue: #42a5f5;
+}
+
+.vintage-recipe-detail-container {
+  min-height: 100vh;
+  color: var(--vintage-ink);
+  font-family: "Crimson Text", serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.vintage-paper-texture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.vintage-recipe-loading,
+.vintage-recipe-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  background: var(--vintage-cream);
+  color: var(--vintage-ink);
+  position: relative;
+  z-index: 2;
+}
+
+.vintage-loading-ornament {
+  font-size: 2rem;
+  color: var(--vintage-gold);
+  margin: 10px 0;
+  font-family: "EB Garamond", serif;
+}
+
+.vintage-loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--vintage-parchment);
+  border-top: 4px solid var(--vintage-brown);
+  border-radius: 50%;
+  animation: vintage-spin 2s linear infinite;
+  margin: 20px 0;
+}
+
+.vintage-loading-text {
+  font-size: 1.3rem;
+  color: var(--vintage-sepia);
+  font-style: italic;
+  font-family: "Cormorant Garamond", serif;
+}
+
+@keyframes vintage-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.vintage-error-frame {
+  background: var(--vintage-paper);
+  padding: 60px 40px;
+  border: 3px double var(--vintage-brown);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px var(--vintage-shadow);
+  max-width: 500px;
+}
+
+.vintage-error-title {
+  font-family: "EB Garamond", serif;
+  font-size: 2.5rem;
+  color: var(--vintage-brown);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.vintage-error-message {
+  color: var(--vintage-sepia);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.vintage-recipe-hero {
+  position: relative;
+  padding: 80px 5% 60px;
+  z-index: 2;
+  background: white;
+}
+
+.vintage-hero-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.vintage-hero-text {
+  padding-right: 20px;
+}
+
+.vintage-recipe-title {
+  font-family: "EB Garamond", serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: var(--vintage-dark-brown);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+}
+
+.vintage-title-underline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 35px;
+  gap: 20px;
+}
+
+.vintage-underline-center {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--vintage-brown), transparent);
+  max-width: 200px;
+}
+
+.vintage-recipe-summary {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--vintage-sepia);
+  margin-bottom: 45px;
+  text-align: justify;
+  font-style: italic;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.vintage-recipe-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  margin-bottom: 50px;
+  padding: 30px;
+  border: 2px solid var(--vintage-border);
+  border-radius: 10px;
+  box-shadow: inset 0 2px 10px rgba(139, 69, 19, 0.1);
+}
+
+.vintage-meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dotted var(--vintage-fade);
+}
+
+.vintage-meta-item:last-child {
+  border-bottom: none;
+}
+
+.vintage-meta-label {
+  font-size: 1rem;
+  color: var(--vintage-brown);
+  font-weight: 600;
+  font-family: "EB Garamond", serif;
+}
+
+.vintage-meta-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--vintage-dark-brown);
+  font-style: italic;
+}
+
+.vintage-hero-image {
+  position: relative;
+}
+
+.vintage-image-frame {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  background: var(--vintage-paper);
+  padding: 20px;
+  border: 4px double var(--vintage-brown);
+  box-shadow: 0 15px 35px var(--vintage-shadow), inset 0 0 20px rgba(139, 69, 19, 0.1);
+}
+
+.vintage-frame-corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--vintage-gold);
+  z-index: 3;
+}
+
+.vintage-corner-tl {
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.vintage-corner-tr {
+  top: 10px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.vintage-corner-bl {
+  bottom: 10px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+}
+
+.vintage-corner-br {
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+}
+
+.vintage-recipe-image {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  border-radius: 8px;
+}
+
+.vintage-image-frame:hover .vintage-recipe-image {
+  transform: scale(1.02);
+}
+
+.vintage-image-vignette {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(47, 27, 20, 0.1) 70%);
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.vintage-image-caption {
+  text-align: center;
+  margin-top: 20px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  color: var(--vintage-sepia);
+  font-style: italic;
+}
+
+.modern-nutrition-section {
+  padding: 100px 5%;
+  background: var(--modern-bg);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.modern-nutrition-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.modern-nutrition-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  border-radius: 24px;
+  padding: 60px;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.modern-nutrition-left {
+  position: relative;
+  z-index: 3;
+}
+
+.modern-nutrition-title {
+  font-family: "EB Garamond", serif;
+  font-size: clamp(2.8rem, 4vw, 4rem);
+  color: #634220;
+  margin-bottom: 40px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.modern-nutrition-facts {
+  margin-bottom: 40px;
+}
+
+.modern-nutrition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px dashed #8b4513;
+  transition: all 0.3s ease;
+}
+
+.modern-nutrition-item:hover {
+  background: rgba(245, 200, 66, 0.05);
+  padding-left: 12px;
+  border-radius: 8px;
+  border-bottom: 1px solid transparent;
+}
+
+.modern-nutrition-item:last-child {
+  border-bottom: none;
+}
+
+.modern-nutrition-label {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  color: var(--modern-light-gray);
+  font-weight: 400;
+}
+
+.modern-nutrition-value {
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  color: var(--modern-gray);
+  font-weight: 600;
+}
+
+.modern-nutrition-right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.modern-nutrition-image-container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-nutrition-image {
+  width: clamp(280px, 30vw, 350px);
+  height: clamp(280px, 30vw, 350px);
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s ease;
+}
+
+.modern-nutrition-image:hover {
+  transform: scale(1.05) rotate(-2deg);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.modern-yellow-blob {
+  position: absolute;
+  top: -10%;
+  right: -15%;
+  width: 70%;
+  height: 120%;
+  background: var(--modern-yellow);
+  border-radius: 50% 30% 40% 60%;
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.vintage-section-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 50px;
+  padding-bottom: 25px;
+}
+
+.vintage-section-title {
+  font-family: "EB Garamond", serif;
+  font-size: 2.8rem;
+  color: var(--vintage-dark-brown);
+  margin: 0;
+  text-align: center;
+}
+
+.vintage-header-ornament {
+  color: var(--vintage-gold);
+  font-size: 2rem;
+  font-family: "EB Garamond", serif;
+}
+
+.vintage-ingredients-section {
+  padding: 80px 5%;
+  max-width: 100vw;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  background-color: #fafafa;
+}
+
+.vintage-servings-info {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: var(--vintage-parchment);
+  border: 2px dashed var(--vintage-brown);
+  border-radius: 10px;
+  display: inline-block;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.vintage-servings-label {
+  font-family: "EB Garamond", serif;
+  font-size: 1.1rem;
+  color: var(--vintage-brown);
+  margin-right: 10px;
+}
+
+.vintage-servings-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--vintage-dark-brown);
+  font-style: italic;
+}
+
+.vintage-ingredients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.vintage-ingredient-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.vintage-ingredient-card:hover {
+  transform: translateY(-8px) rotate(1deg);
+  border-color: var(--vintage-brown);
+}
+
+.vintage-ingredient-frame {
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.vintage-ingredient-image {
+  position: relative;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.vintage-ingredient-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--vintage-copper);
+  box-shadow: 0 4px 15px rgba(184, 115, 51, 0.3);
+}
+
+.vintage-ingredient-border {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border: 2px dashed var(--vintage-gold);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.vintage-ingredient-card:hover .vintage-ingredient-border {
+  opacity: 1;
+}
+
+.vintage-ingredient-name {
+  font-size: 1.1rem;
+  color: var(--vintage-dark-brown);
+  margin-bottom: 8px;
+  text-transform: capitalize;
+  font-family: "EB Garamond", serif;
+  font-weight: 600;
+}
+
+.vintage-ingredient-amount {
+  color: var(--vintage-brown);
+  font-weight: 600;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.retro-instructions-section {
+  padding: 100px 5%;
+  background: white;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.retro-section-header {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.retro-section-title {
+  font-family: "EB Garamond", serif;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  color: #634220;
+  margin: 20px 0 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.retro-step-counter {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  color: #634220;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.retro-instruction-carousel {
+  max-width: 1600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.retro-carousel-container {
+  margin-bottom: 60px;
+  position: relative;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+}
+
+.retro-carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.retro-instruction-card {
+  position: absolute;
+  width: 320px;
+  min-height: 420px;
+  max-height: 600px;
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(101, 67, 33, 0.2);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #634220;
+  overflow: hidden;
+}
+
+.retro-instruction-card.center {
+  z-index: 10;
+  transform: translateX(0) scale(1.1);
+  box-shadow: 0 20px 50px rgba(101, 67, 33, 0.3);
+}
+
+.retro-instruction-card.left {
+  z-index: 5;
+  transform: translateX(-400px) scale(0.9);
+  opacity: 1;
+  background: white;
+}
+
+.retro-instruction-card.right {
+  z-index: 5;
+  transform: translateX(400px) scale(0.9);
+  opacity: 1;
+  background: white;
+}
+
+.retro-card-quote {
+  position: absolute;
+  font-size: 4rem;
+  color: #634220;
+  font-family: "EB Garamond", serif;
+  z-index: 0;
+  line-height: 1;
+}
+
+.retro-card-quote-bottom {
+  bottom: 10px;
+  right: 10px;
+}
+
+.retro-step-number {
+  width: 50px;
+  height: 50px;
+  background: #634220;
+  color: #f8f1e5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+  font-family: "Inter", sans-serif;
+  margin: 0 auto 20px;
+  box-shadow: 0 4px 10px rgba(184, 134, 11, 0.3);
+  z-index: 1;
+}
+
+.retro-step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.retro-step-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #4a3a28;
+  margin-bottom: 20px;
+  font-family: "Cormorant Garamond", serif;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.retro-step-equipment,
+.retro-step-ingredients {
+  margin-top: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top: 1px dashed #b8860b;
+}
+
+.retro-equipment-title,
+.retro-ingredients-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-family: "EB Garamond", serif;
+  color: #8b4513;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.retro-equipment-tags,
+.retro-ingredient-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.retro-equipment-tag,
+.retro-ingredient-tag {
+  background: rgba(184, 134, 11, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  color: #634220;
+  border: 1px dashed rgba(184, 134, 11, 0.3);
+}
+
+.retro-side-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  background: #f8f1e5;
+  border: 2px solid #b8860b;
+  border-radius: 50%;
+  color: #634220;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(101, 67, 33, 0.2);
+  z-index: 15;
+}
+
+.retro-side-nav-btn:hover:not(:disabled) {
+  background: #654321;
+  color: #f8f1e5;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(101, 67, 33, 0.3);
+}
+
+.retro-side-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: translateY(-50%);
+}
+
+.retro-side-nav-left {
+  left: 5%;
+}
+
+.retro-side-nav-right {
+  right: 5%;
+}
+
+.retro-side-nav-arrow {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.retro-step-indicators {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.retro-step-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #d4c5b0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.retro-step-dot.active {
+  background: #b8860b;
+  transform: scale(1.3);
+}
+
+.retro-step-dot:hover:not(.active) {
+  background: #8b4513;
+  transform: scale(1.1);
+}
+
+.vintage-recipe-footer {
+  text-align: center;
+  padding: 60px 5%;
+  background: white;
+  position: relative;
+}
+
+.vintage-footer-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  color: var(--vintage-brown);
+  font-style: italic;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.vintage-footer-source {
+  color: var(--vintage-sepia);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  font-family: "EB Garamond", serif;
+}
+
+.vintage-footer-decoration {
+  color: var(--vintage-copper);
+  font-size: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+  .modern-nutrition-content {
+    gap: 60px;
+    padding: 50px;
+  }
+  .modern-yellow-blob {
+    right: -20%;
+    width: 75%;
+  }
+  .retro-instruction-card {
+    width: 300px;
+    padding: 25px;
+  }
+  .retro-instruction-card.left {
+    transform: translateX(-350px) scale(0.9);
+  }
+  .retro-instruction-card.right {
+    transform: translateX(350px) scale(0.9);
+  }
+  .retro-side-nav-left {
+    left: 3%;
+  }
+  .retro-side-nav-right {
+    right: 3%;
+  }
+}
+
+@media (max-width: 900px) {
+  .vintage-hero-content {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    text-align: center;
+  }
+  .vintage-hero-text {
+    padding-right: 0;
+  }
+  .vintage-recipe-image {
+    height: 400px;
+  }
+  .modern-nutrition-content {
+    grid-template-columns: 1fr;
+    gap: 50px;
+    text-align: center;
+  }
+  .modern-nutrition-right {
+    order: -1;
+  }
+  .modern-yellow-blob {
+    top: -20%;
+    right: -25%;
+    width: 80%;
+    height: 100%;
+  }
+  .vintage-ingredients-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  .retro-instruction-card {
+    width: 280px;
+    padding: 20px;
+  }
+  .retro-instruction-card.left {
+    transform: translateX(-300px) scale(0.9);
+  }
+  .retro-instruction-card.right {
+    transform: translateX(300px) scale(0.9);
+  }
+  .retro-side-nav-left {
+    left: 2%;
+  }
+  .retro-side-nav-right {
+    right: 2%;
+  }
+}
+
+@media (max-width: 768px) {
+  .vintage-recipe-hero {
+    padding: 60px 20px 40px;
+  }
+  .vintage-hero-content {
+    gap: 40px;
+  }
+  .vintage-recipe-title {
+    font-size: 2.5rem;
+  }
+  .vintage-recipe-meta {
+    padding: 20px;
+  }
+  .modern-nutrition-section {
+    padding: 80px 20px;
+  }
+  .modern-nutrition-content {
+    padding: 40px 30px;
+    border-radius: 20px;
+  }
+  .modern-nutrition-title {
+    font-size: 3rem;
+  }
+  .modern-nutrition-image {
+    width: 280px;
+    height: 280px;
+  }
+  .modern-yellow-blob {
+    top: -15%;
+    right: -30%;
+    width: 85%;
+    height: 90%;
+  }
+  .vintage-ingredients-section {
+    padding: 60px 20px;
+  }
+  .vintage-section-title {
+    font-size: 2.2rem;
+  }
+  .vintage-ingredients-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+  .retro-instructions-section {
+    padding: 80px 20px;
+  }
+  .retro-instruction-card {
+    width: 260px;
+    padding: 18px;
+  }
+  .retro-instruction-card.center {
+    transform: translateX(0) scale(1);
+  }
+  .retro-instruction-card.left {
+    transform: translateX(-250px) scale(0.9);
+  }
+  .retro-instruction-card.right {
+    transform: translateX(250px) scale(0.9);
+  }
+  .retro-side-nav-left {
+    left: 1%;
+  }
+  .retro-side-nav-right {
+    right: 1%;
+  }
+}
+
+@media (max-width: 625px) {
+  .retro-instruction-card {
+    width: 280px;
+    padding: 20px;
+  }
+  .retro-instruction-card.center {
+    transform: translateX(0) scale(1);
+  }
+  .retro-instruction-card.left {
+    transform: translateX(-220px) scale(0.8);
+    overflow: hidden;
+  }
+  .retro-instruction-card.right {
+    transform: translateX(220px) scale(0.8);
+    overflow: hidden;
+  }
+  .retro-side-nav-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+  .retro-side-nav-left {
+    left: 2%;
+  }
+  .retro-side-nav-right {
+    right: 2%;
+  }
+}
+
+@media (max-width: 480px) {
+  .vintage-recipe-hero {
+    padding: 40px 15px 30px;
+  }
+  .vintage-recipe-title {
+    font-size: 2rem;
+  }
+  .vintage-recipe-image {
+    height: 280px;
+  }
+  .vintage-image-frame {
+    padding: 15px;
+  }
+  .modern-nutrition-section {
+    padding: 60px 15px;
+  }
+  .modern-nutrition-content {
+    padding: 30px 20px;
+    border-radius: 16px;
+  }
+  .modern-nutrition-title {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+  .modern-nutrition-image {
+    width: 240px;
+    height: 240px;
+  }
+  .modern-yellow-blob {
+    top: -10%;
+    right: -35%;
+    width: 90%;
+    height: 80%;
+  }
+  .vintage-ingredients-section {
+    padding: 40px 15px;
+  }
+  .vintage-ingredient-card {
+    padding: 15px;
+  }
+  .vintage-ingredient-image img {
+    width: 60px;
+    height: 60px;
+  }
+  .retro-instruction-card {
+    width: 250px;
+    padding: 18px;
+  }
+  .retro-instruction-card.left {
+    transform: translateX(-190px) scale(0.75);
+  }
+  .retro-instruction-card.right {
+    transform: translateX(190px) scale(0.75);
+  }
+  .retro-side-nav-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+  .retro-side-nav-left {
+    left: 1%;
+  }
+  .retro-side-nav-right {
+    right: 1%;
+  }
+}

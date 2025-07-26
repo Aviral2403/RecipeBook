@@ -1,0 +1,153 @@
+.search-bar-container {
+  position: relative;
+  height: 60vh;
+  min-height: 500px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), 
+              url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+.search-bar-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+  z-index: 1;
+}
+
+.search-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.search-title {
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 0.3rem;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.search-bar:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.search-bar:focus-within {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5);
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  background: transparent;
+  color: white;
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+}
+
+.search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+}
+
+.search-bar input:focus::placeholder {
+  opacity: 0.5;
+}
+
+.search-bar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.search-bar button:hover {
+  color: white;
+}
+
+.search-bar button svg {
+  width: 22px;
+  height: 22px;
+}
+
+.search-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 3rem;
+  font-weight: 300;
+  letter-spacing: 0.1rem;
+}
+
+
+@media (max-width: 768px) {
+  .search-bar-container {
+    height: 50vh;
+    min-height: 400px;
+  }
+  
+  .search-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-content {
+    padding: 0 1rem;
+  }
+  
+  
+}
+
+@media (max-width: 480px) {
+  .search-title {
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+  }
+  
+  .search-bar input {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .search-bar button {
+    padding: 0.8rem 1rem;
+  }
+  
+  
+}
