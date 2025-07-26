@@ -46,11 +46,11 @@ const Landing = () => {
 
   useEffect(() => {
     const cookingVideos = [
-      "./video-1.mp4",
-      "./video-2.mp4",
-      "./video-3.mp4",
-      "./video-4.mp4",
-      "./video-5.mp4",
+      "/video-1.mp4",
+      "/video-2.mp4",
+      "/video-3.mp4",
+      "/video-4.mp4",
+      "/video-5.mp4",
     ];
 
     const videoPromises = cookingVideos.map((videoSrc) => {
