@@ -1,4 +1,6 @@
-const API_KEY = '734c040cf6c348519220a7b8d8951475';
+import api from "./axiosConfig";
+
+const API_KEY = '4edcd0c3093445349691a3292bcc5b77';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 console.log('API Key:', API_KEY)
@@ -57,6 +59,37 @@ export const searchRecipes = async (query, filters = {}) => {
     return await response.json();
   } catch (error) {
     console.error('Error searching recipes:', error);
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+export const addRecipeReview = async (recipeId, rating, comment, userName) => {
+  try {
+    const response = await api.post('/api/reviews', {
+      recipeId,
+      rating,
+      comment,
+      userName
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding review:', error);
+    throw error;
+  }
+};
+
+export const getRecipeReviews = async (recipeId) => {
+  try {
+    const response = await api.get(`/api/reviews/${recipeId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
     throw error;
   }
 };

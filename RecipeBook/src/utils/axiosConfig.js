@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create axios instance with base URL
 const api = axios.create({
-  baseURL: 'https://recipebook-backend-mel3.onrender.com',
+  baseURL: 'http://localhost:5500',
   timeout: 10000,
 });
 

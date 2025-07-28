@@ -334,12 +334,14 @@
 }
 
 .mobile-menu-button.register {
-  color: rgba(101, 67, 33, 1);
+  color: white;
+  background: #65432170;
 }
 
 .mobile-menu-button.logout {
-  color: rgba(255, 107, 107, 0.8);
-}
+    color: white;
+    background: #65432170;
+  }
 
 @media (max-width: 480px) {
   .mobile-menu-button {

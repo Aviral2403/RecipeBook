@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { fetchRecipeById, fetchRecipeInstructions } from "../../utils/api";
 
 import "./RecipeDetail.css";
+import Reviews from "../../components/Reviews/Reviews";
 
 const RecipeDetail = () => {
   const { id } = useParams();
@@ -555,6 +556,8 @@ const RecipeDetail = () => {
           </div>
         </section>
       )}
+
+      <Reviews recipeId={id} />
 
       <footer className="vintage-recipe-footer">
         <p className="vintage-footer-text">

@@ -13,6 +13,8 @@ connectDB();
 // Route files
 const authRoutes = require('./routes/authRoutes');
 const recipeRoutes = require('./routes/recipeRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+
 
 const app = express();
 
@@ -49,6 +51,8 @@ app.use(cors(corsOptions));
 // Mount routers
 app.use('/api/auth', authRoutes);
 app.use('/api/recipes', recipeRoutes);
+app.use('/api/reviews', reviewRoutes);
+
 
 // Error handler middleware
 app.use(errorHandler);

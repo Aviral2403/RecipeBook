@@ -41,7 +41,7 @@ const Navbar = () => {
           <div className="navbar-links desktop-menu">
             <Link to="/" className="navbar-link">Home</Link>
             <Link to="/recipes" className="navbar-link">Recipes</Link>
-            <Link to="/saved" className="navbar-link">Saved Recipes</Link>
+            <Link to="/saved" className="navbar-link">Saved</Link>
             {user ? (
               <button className="navbar-button logout" onClick={logout}>
                 Logout
@@ -51,9 +51,7 @@ const Navbar = () => {
                 <Link to="/login" className="navbar-button login">
                   Login
                 </Link>
-                <Link to="/register" className="navbar-button register">
-                  Register
-                </Link>
+                
               </>
             )}
           </div>
@@ -81,7 +79,7 @@ const Navbar = () => {
             Recipes
           </Link>
           <Link to="/saved" className="mobile-menu-link" onClick={closeMenu}>
-            Saved Recipes
+            Saved
           </Link>
           {user ? (
             <button 
@@ -98,9 +96,7 @@ const Navbar = () => {
               <Link to="/login" className="mobile-menu-link mobile-menu-button login" onClick={closeMenu}>
                 Login
               </Link>
-              <Link to="/register" className="mobile-menu-link mobile-menu-button register" onClick={closeMenu}>
-                Register
-              </Link>
+              
             </>
           )}
         </div>
