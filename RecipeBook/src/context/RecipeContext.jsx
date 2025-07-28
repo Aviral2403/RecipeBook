@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
+import api from '../utils/axiosConfig'; // Import the configured axios instance
+import { useAuth } from './AuthContext';
 import { fetchRandomRecipes, fetchRecipeById, searchRecipes } from '../utils/api';
 
 const RecipeContext = createContext();
@@ -8,35 +10,86 @@ export const RecipeProvider = ({ children }) => {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentQuery, setCurrentQuery] = useState('');
   const [currentFilters, setCurrentFilters] = useState({});
   const [isRandomMode, setIsRandomMode] = useState(false);
+  
+  // Add safety check for useAuth
+  const authContext = useAuth();
+  const token = authContext?.token;
 
+  // Get saved recipes from backend
+  const getSavedRecipes = async () => {
+    if (!token) return;
+    
+    try {
+      setLoading(true);
+      const res = await api.get('/api/recipes/saved');
+      setSavedRecipes(res.data.data.map(item => item.recipeData));
+      setError(null);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to load saved recipes');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Save recipe to backend
+  const saveRecipe = async (recipe) => {
+    if (!token) {
+      setError('Please login to save recipes');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await api.post('/api/recipes/save', {
+        recipeId: recipe.id,
+        recipeData: recipe
+      });
+      await getSavedRecipes(); // Refresh saved recipes list
+      setError(null);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to save recipe');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Remove saved recipe from backend
+  const removeSavedRecipe = async (id) => {
+    try {
+      setLoading(true);
+      await api.delete(`/api/recipes/save/${id}`);
+      setSavedRecipes(savedRecipes.filter(recipe => recipe.id !== id));
+      setError(null);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to remove recipe');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch random recipes from Spoonacular API
   const getRandomRecipes = async (count = 6, append = false) => {
     setLoading(true);
     try {
       const data = await fetchRandomRecipes(count);
       
       if (append) {
-        // Append new recipes to existing ones
         setRecipes(prev => [...prev, ...data.recipes]);
       } else {
-        // Replace recipes (initial load)
         setRecipes(data.recipes);
       }
       
       setError(null);
       
-      // For random recipes, we don't need traditional pagination
-      // Just track that we're in random mode
       if (!append) {
         setCurrentPage(1);
-        setTotalResults(0); // We don't know the total for random recipes
+        setTotalResults(0);
         setTotalPages(0);
         setCurrentQuery('');
         setCurrentFilters({});
@@ -49,6 +102,7 @@ export const RecipeProvider = ({ children }) => {
     }
   };
 
+  // Fetch recipe details by ID from Spoonacular API
   const getRecipeById = async (id) => {
     setLoading(true);
     try {
@@ -63,13 +117,12 @@ export const RecipeProvider = ({ children }) => {
     }
   };
 
+  // Search recipes from Spoonacular API
   const searchRecipesByQuery = async (query, filters = {}, page = 1, resultsPerPage = 12, resetResults = true) => {
     setLoading(true);
     try {
-      // Calculate offset for pagination
       const offset = (page - 1) * resultsPerPage;
       
-      // Add pagination parameters to filters
       const paginationFilters = {
         ...filters,
         number: resultsPerPage,
@@ -79,10 +132,8 @@ export const RecipeProvider = ({ children }) => {
       const data = await searchRecipes(query, paginationFilters);
       
       if (resetResults || page === 1) {
-        // First page or new search - replace recipes
         setRecipes(data.results || []);
       } else {
-        // Subsequent pages - append to existing recipes
         setRecipes(prev => [...prev, ...(data.results || [])]);
       }
       
@@ -104,7 +155,7 @@ export const RecipeProvider = ({ children }) => {
   // Load more random recipes
   const loadMoreRandomRecipes = async (count = 12) => {
     if (!loading && isRandomMode) {
-      await getRandomRecipes(count, true); // true = append to existing recipes
+      await getRandomRecipes(count, true);
     }
   };
 
@@ -120,16 +171,6 @@ export const RecipeProvider = ({ children }) => {
     if (page >= 1 && page <= totalPages && page !== currentPage && !loading && !isRandomMode) {
       await searchRecipesByQuery(currentQuery, currentFilters, page, 12, true);
     }
-  };
-
-  const saveRecipe = (recipe) => {
-    if (!savedRecipes.some(r => r.id === recipe.id)) {
-      setSavedRecipes([...savedRecipes, recipe]);
-    }
-  };
-
-  const removeSavedRecipe = (id) => {
-    setSavedRecipes(savedRecipes.filter(recipe => recipe.id !== id));
   };
 
   // Reset pagination
@@ -163,6 +204,7 @@ export const RecipeProvider = ({ children }) => {
         saveRecipe,
         removeSavedRecipe,
         resetPagination,
+        getSavedRecipes
       }}
     >
       {children}

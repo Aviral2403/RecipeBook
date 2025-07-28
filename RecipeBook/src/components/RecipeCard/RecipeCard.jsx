@@ -1,15 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useRecipes } from '../../context/RecipeContext';
+import { useAuth } from '../../context/AuthContext';
 import './RecipeCard.css';
 
 const RecipeCard = ({ recipe }) => {
   const { saveRecipe, savedRecipes } = useRecipes();
+  const { user } = useAuth();
   const isSaved = savedRecipes.some(r => r.id === recipe.id);
 
   const handleSave = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!user) {
+      alert('Please login to save recipes');
+      return;
+    }
     saveRecipe(recipe);
   };
 
@@ -22,8 +28,8 @@ const RecipeCard = ({ recipe }) => {
             alt={recipe.title}
             className="recipe-image"
             onError={(e) => {
-                e.target.src = "/placeholder.jpg"; // Fallback if image fails to load
-              }}
+              e.target.src = "/placeholder.jpg";
+            }}
           />
           <div className="recipe-overlay">
             <button 

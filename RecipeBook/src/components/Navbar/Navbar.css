@@ -271,3 +271,78 @@
     gap: 2rem;
   }
 }
+
+/* Auth Button Styles */
+.navbar-button {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  position: relative;
+}
+
+.navbar-button:hover {
+  transform: translateY(-2px);
+}
+
+.navbar-button::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #654321;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-button:hover::after {
+  width: 80%;
+}
+
+/* Specific button styles */
+.navbar-button.login {
+  background: rgba(101, 67, 33, 0.2);
+}
+
+.navbar-button.register {
+  background: rgba(101, 67, 33, 0.4);
+}
+
+.navbar-button.logout {
+  background: rgba(255, 107, 107, 0.2);
+}
+
+/* Mobile menu button styles */
+.mobile-menu-button {
+  font-size: 1.8rem;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: center;
+}
+
+.mobile-menu-button.login {
+  color: rgba(101, 67, 33, 0.8);
+}
+
+.mobile-menu-button.register {
+  color: rgba(101, 67, 33, 1);
+}
+
+.mobile-menu-button.logout {
+  color: rgba(255, 107, 107, 0.8);
+}
+
+@media (max-width: 480px) {
+  .mobile-menu-button {
+    font-size: 1.6rem;
+  }
+}

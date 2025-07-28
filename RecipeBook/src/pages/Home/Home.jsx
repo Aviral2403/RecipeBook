@@ -207,13 +207,6 @@ const Home = () => {
                 />
               )}
               
-              {/* Show loading indicator when changing pages */}
-              {loading && recipes.length > 0 && (
-                <div className="page-loading">
-                  <div className="loading-spinner"></div>
-                  <p>Loading recipes...</p>
-                </div>
-              )}
             </>
           )}
         </div>
