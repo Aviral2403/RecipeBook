@@ -19,8 +19,32 @@ const app = express();
 // Body parser
 app.use(express.json());
 
-// Enable CORS
-app.use(cors());
+// Configure CORS options
+const corsOptions = {
+  origin: function (origin, callback) {
+    // List of allowed origins
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:5174', // Local development
+      'https://recipebook-jk0h.onrender.com', // Your deployed frontend URL
+    ];
+
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Enable credentials if you need cookies/sessions
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+};
+
+// Enable CORS with options
+app.use(cors(corsOptions));
 
 // Mount routers
 app.use('/api/auth', authRoutes);
